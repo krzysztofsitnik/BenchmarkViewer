@@ -1,7 +1,6 @@
 USE master
-IF NOT EXISTS(select * from sys.databases where name='BenchmarkViewer')
+IF NOT EXISTS(SELECT * FROM sys.databases WHERE NAME='BenchmarkViewer')
 	CREATE DATABASE BenchmarkViewer
-
 USE BenchmarkViewer
 
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Benchmarks')
@@ -12,4 +11,5 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Benchmarks')
 		MetricName VARCHAR(32) NOT NULL,
 		Unit VARCHAR(32) NOT NULL,
 		PRIMARY KEY (BenchmarkID))
-	CREATE INDEX Index1 on Benchmarks (Date, BenchmarkID)
+	CREATE INDEX Index1 ON Benchmarks (Date, BenchmarkID)
+INSERT INTO Benchmarks VALUES ('BenchmarksGame.Fasta_1.RunBench','20190312 10:34:09.000',18272800,'Time','Nanoseconds')
