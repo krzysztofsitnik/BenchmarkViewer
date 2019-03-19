@@ -8,6 +8,6 @@ namespace BenchmarkViewer.Models.DbModels
     public class Benchmark
     {
         public int BenchmarkId { get; set; }
-
+        public string BenchmarkName { get; set; }
     }
 }
