@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Dapper;
 using BenchmarkViewer.Models.Contracts;
+using BenchmarkViewer.Services;
 
 namespace BenchmarkViewer.Controllers
 {
@@ -54,58 +55,8 @@ namespace BenchmarkViewer.Controllers
         [HttpPut()]
         public void Put([FromBody] Models.Contracts.BenchmarkData value)
         {
-            using (var connection = new SqlConnection(ConnectionString))
-            {
-                string BenchmarkFullName = "test3";
-
-                connection.Open();
-
-                string query = "SELECT COUNT (1) FROM Benchmarks WHERE Benchmark = @Benchmark";
-
-                bool DoesBenchmarkIDExist = false;
-
-                DoesBenchmarkIDExist = connection.ExecuteScalar<bool>(query, new { Benchmark = BenchmarkFullName });
-
-                if (DoesBenchmarkIDExist == true)
-                {
-                    var BenchmarkID = connection.Query<int>("SELECT BenchmarkID FROM Benchmarks WHERE Benchmark = @Benchmark", new { Benchmark = BenchmarkFullName }).Single();
-
-                    string sql = "INSERT INTO BenchmarkMeasurments (BenchmarkID, Date, Value, MetricName, Unit) VALUES (@BenchmarkID, @Date, @Value, @MetricName, @Unit)";
-
-                    var benchmarkMeasurment = new Measurement(BenchmarkID, DateTime.Now, 1, "Time", "Nanoseconds");
-
-                    var insertDetails = connection.Execute(sql,
-                        new
-                        {
-                            BenchmarkID = benchmarkMeasurment.BenchmarkID,
-                            Date = benchmarkMeasurment.Date,
-                            Value = benchmarkMeasurment.Value,
-                            MetricName = benchmarkMeasurment.MetricName,
-                            Unit = benchmarkMeasurment.Unit
-                        });
-                }
-                else
-                {
-
-                    connection.Execute("INSERT INTO Benchmarks VALUES (@Benchmark)", new { Benchmark = BenchmarkFullName });
-
-                    var BenchmarkID = connection.Query<int>("SELECT BenchmarkID FROM Benchmarks WHERE Benchmark = @Benchmark", new { Benchmark = BenchmarkFullName }).Single();
-
-                    string sql = "INSERT INTO BenchmarkMeasurments (BenchmarkID, Date, Value, MetricName, Unit) VALUES (@BenchmarkID, @Date, @Value, @MetricName, @Unit)";
-
-                    var benchmarkMeasurment = new Measurement(BenchmarkID, DateTime.Now, 1, "Time", "Nanoseconds");
-
-                    var insertDetails = connection.Execute(sql,
-                        new
-                        {
-                            BenchmarkID = benchmarkMeasurment.BenchmarkID,
-                            Date = benchmarkMeasurment.Date,
-                            Value = benchmarkMeasurment.Value,
-                            MetricName = benchmarkMeasurment.MetricName,
-                            Unit = benchmarkMeasurment.Unit
-                        });
-                }
-            }
+            var dataStorageService = new DataStorageService();
+            dataStorageService.InsertResults(value);
         }
     }
 }

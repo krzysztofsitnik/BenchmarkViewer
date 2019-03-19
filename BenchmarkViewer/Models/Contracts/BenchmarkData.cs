@@ -4,12 +4,12 @@ namespace BenchmarkViewer.Models.Contracts
 {
     public class BenchmarkData
     {
-        public string Benchmark { get; set; }
+        public string BenchmarkName { get; set; }
         public int BenchmarkId { get; set; }
 
         public BenchmarkData (string Benchmark)
         {
-            this.Benchmark = Benchmark;
+            this.BenchmarkName = Benchmark;
         }
 
         public Measurement[] Measurements { get; set; }
