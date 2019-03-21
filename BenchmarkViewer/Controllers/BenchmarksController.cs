@@ -8,32 +8,13 @@ namespace BenchmarkViewer.Controllers
     [Route("api/[controller]")]
     public class BenchmarksController : Controller
     {
-        [HttpGet("[action]")]
-        public Measurement[] Get()
-        {
-            string BenchmarkName = "test";
-
-            DateTime from = new DateTime(2019, 1, 1);
-
-            DateTime to = new DateTime(2019, 12, 1);
-
-            var dataStorageService = new DataStorageService();
-
-            return dataStorageService.GetMeasurements(BenchmarkName, from, to);
-        }
-
         // GET: api /Benchmarks/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public Measurement[] Get(string id)
         {
-            return "value";
-        }
+            var dataStorageService = new DataStorageService();
 
-       // POST: api/Benchmarks
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-
+            return dataStorageService.GetMeasurements(id, DateTime.Now.AddMonths(-1), DateTime.Now);
         }
 
         // PUT: api/Benchmarks/

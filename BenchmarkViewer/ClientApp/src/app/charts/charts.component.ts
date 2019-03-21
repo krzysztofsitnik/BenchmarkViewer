@@ -11,7 +11,7 @@ export class ChartsComponent implements OnInit {
   public measurements: Measurement[];
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    http.get<Measurement[]>(baseUrl + 'api/Benchmarks/Get').subscribe(result => {
+      http.get<Measurement[]>(baseUrl + 'api/Benchmarks/' + 'Burgers.Test0').subscribe(result => {
         this.measurements = result;
         this.chart1.data = this.measurements.map(m => [new Date(m.date), m.value]);
     }, error => console.error(error)); }
@@ -41,9 +41,9 @@ export class ChartsComponent implements OnInit {
 
   }
 interface Measurement {
-  BenchmarkID: number;
-  Date: Date;
-  Value: number;
-  MetricName: string;
-  Unit: string;
+  benchmarkID: number;
+  date: Date;
+  value: number;
+  metricName: string;
+  unit: string;
 }
