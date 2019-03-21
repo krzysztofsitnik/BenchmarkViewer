@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-charts',
@@ -7,67 +8,42 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChartsComponent implements OnInit {
 
-  chart1 = {
-      title: 'FirstSample',
-    type: 'LineChart',
-    data: [
-      ['01/01/2019', 12.94, 15],
-      ['02/01/2019', 10.49, 13],
-      ['03/01/2019', 19.30, 13],
-      ['04/01/2019', 21.45, 4],
-    ],
-    columnNames: ['Date', 'Linux', 'Windows'],
-    options: {
-      colors: ['#0000ff', '#ff0000'],
-      animation: {
-        duration: 250,
-        easing: 'ease-in-out',
-        startup: true
-      }
-    }
-  };
+  public measurements: Measurement[];
 
-  chart2 = {
-    title: 'SecondSample',
-    type: 'LineChart',    
-    data: [
-      ['01/01/2019', 12.94, 25, 10],
-      ['02/01/2019', 10.49, 13, 2],
-      ['03/01/2019', 19.30, 13, 30],
-      ['04/01/2019', 21.45, 4, 12.1],
-    ],
-    columnNames: ['Date', 'Linux', 'Windows', 'X'],
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+    http.get<Measurement[]>(baseUrl + 'api/Benchmarks/Get').subscribe(result => {
+        this.measurements = result;
+        this.chart1.data = this.measurements.map(m => [new Date(m.date), m.value]);
+    }, error => console.error(error)); }
 
-    options: {
-      colors: ['#0000ff', '#ff0000', '#cc66ff'],
-      lineWidth: 3,      
-      legend: { position: 'bottom' },
-      curveType: 'function',
-      displayRangeSelector: true,
-      series: {
-        0: { type: 'line' },
-        1: { type: 'line' },
-        2: { type: 'line', lineWidth: 1 }
-      },
-      animation: {
-        duration: 250,
-        easing: 'ease-in-out',
-        startup: true
-      },
-      hAxis: {
-        title: 'Date',
-      },
-      vAxis: {
-        title: 'Time',
+    chart1 = {
+        title: 'FirstSample',
+        type: 'LineChart',
+        data: [],
+        cols: [
+            { type: 'date', id: 'date' },
+            { type: 'number', id: 'value' },
+        ],
+        options: {
+            colors: ['#0000ff' ],
+            animation: {
+                duration: 250,
+                easing: 'ease-in-out',
+                startup: true
+            },
+            pointSize: 3,
         },
-        pointSize: 5,
-    }
-  };
-
-    chart3 = {
-        type: 'Table'
+        height: 1000,
     };
-      ngOnInit() {
-      }
 
+    ngOnInit() {
+    }
+
+  }
+interface Measurement {
+  BenchmarkID: number;
+  Date: Date;
+  Value: number;
+  MetricName: string;
+  Unit: string;
 }

@@ -1,40 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Dapper;
 using BenchmarkViewer.Models.Contracts;
 using BenchmarkViewer.Services;
 
 namespace BenchmarkViewer.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class BenchmarksController : ControllerBase
+    public class BenchmarksController : Controller
     {
-        const string ConnectionString = @"Server=.;Integrated Security=true;Database=BenchmarkViewer;";
-
-        //GET: api/Benchmarks
-        [HttpGet]
-        public IEnumerable<int> Get()
+        [HttpGet("[action]")]
+        public Measurement[] Get()
         {
-            using (var connection = new SqlConnection(ConnectionString))
-            {
-                connection.Open();
+            string BenchmarkName = "test";
 
-                var initialQuery = @"SELECT * FROM Benchmarks";
+            DateTime from = new DateTime(2019, 1, 1);
 
-                var initialQueryResult = connection.Query<Models.Contracts.BenchmarkData>(initialQuery).ToArray();
+            DateTime to = new DateTime(2019, 12, 1);
 
-                var measurmentsQuery = @"SELECT * FROM BenchmarkMeasurments";
+            var dataStorageService = new DataStorageService();
 
-                var measurmentsQueryResult = connection.Query<Models.Contracts.Measurement>(measurmentsQuery).ToArray();
-
-                return initialQueryResult.Select(b => b.BenchmarkId);
-            }
+            return dataStorageService.GetMeasurements(BenchmarkName, from, to);
         }
 
         // GET: api /Benchmarks/5
@@ -44,7 +29,7 @@ namespace BenchmarkViewer.Controllers
             return "value";
         }
 
-        // POST: api/Benchmarks
+       // POST: api/Benchmarks
         [HttpPost]
         public void Post([FromBody] string value)
         {

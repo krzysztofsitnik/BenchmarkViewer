@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 
 namespace BenchmarkViewer.Services
 {
-    public class DataStorageService
-    {
+    public class DataStorageService    {
         const string ConnectionString = @"Server=.;Integrated Security=true;Database=BenchmarkViewer;";
 
         public void InsertResults(BenchmarkData benchmarkData)
@@ -39,15 +38,14 @@ namespace BenchmarkViewer.Services
 
                 var benchmarkID = GetBenchmarkID(benchmarkName, connection);
 
-                var sql = "SELECT Date, Value, MetricName, Unit FROM BenchmarkMeasurments WHERE BenchmarkID = @BenchmarkID " +
+                var sql = "SELECT * FROM BenchmarkMeasurments WHERE BenchmarkID = @BenchmarkID " +
                     "AND Date BETWEEN @from AND @to";
 
                 return connection.Query<Models.DbModels.Measurement>(sql,
-                    new {
-                        BenchmarkID = benchmarkID,
+                    new { BenchmarkID = benchmarkID,
                         from,
                         to,
-                    })
+                        })
                     .Select(m => new Measurement(m.BenchmarkID, m.Date, m.Value, m.MetricName, m.Unit))
                     .ToArray();
             }
