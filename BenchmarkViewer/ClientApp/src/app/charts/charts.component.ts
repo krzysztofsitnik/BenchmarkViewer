@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 export class ChartsComponent implements OnInit {
 
   public measurements: Measurement[];
+  public chartType: string;
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
       http.get<Measurement[]>(baseUrl + 'api/Benchmarks/' + 'Burgers.Test0').subscribe(result => {
@@ -39,7 +40,11 @@ export class ChartsComponent implements OnInit {
     ngOnInit() {
     }
 
-  }
+    changeType(newType) {
+      this.chart1.type = newType;
+    }
+}
+
 interface Measurement {
   benchmarkID: number;
   date: Date;

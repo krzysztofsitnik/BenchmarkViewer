@@ -1,3 +1,10 @@
+<form>
+    Select chart type:
+    <select [(ngModel)]="chartType" (ngModelChange)="changeType($event)" name="chartTypeSelect">
+        <option value="LineChart">Line Chart
+        <option value="ScatterChart">Scatter Chart
+    </select>
+</form>     
 <google-chart style="width: 100%"
   [title]="chart1.title" 
   [type]="chart1.type"
@@ -5,3 +12,4 @@
   [columnNames]="chart1.columnNames"
   [options]="chart1.options">
 </google-chart>
+
