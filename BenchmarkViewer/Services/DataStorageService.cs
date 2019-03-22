@@ -9,8 +9,23 @@ using System.Threading.Tasks;
 
 namespace BenchmarkViewer.Services
 {
-    public class DataStorageService    {
+    public class DataStorageService
+    {
         const string ConnectionString = @"Server=.;Integrated Security=true;Database=BenchmarkViewer;";
+
+        public Benchmark[] GetBenchmarks()
+        {
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+
+                var sql = "SELECT * FROM Benchmarks";
+
+                return connection.Query<Models.DbModels.Benchmark>(sql)
+                    .Select(b => new BenchmarkData(b.BenchmarkName,b.BenchmarkId)
+                    .ToArray();
+            }
+        }
 
         public void InsertResults(BenchmarkData benchmarkData)
         {
