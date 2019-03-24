@@ -6,18 +6,18 @@ namespace BenchmarkViewer.Models.Contracts
     {
         public string BenchmarkName { get; set; }
         public int BenchmarkId { get; set; }
+        public Measurement[] Measurements { get; set; }
 
-        public BenchmarkData (string Benchmark)
+        public BenchmarkData(string Benchmark)
         {
             this.BenchmarkName = Benchmark;
         }
 
-        public BenchmarkData(string Benchmark, int benchmarkId) : this(Benchmark)
+        public BenchmarkData(string benchmark, int benchmarkId)
         {
-            BenchmarkId = benchmarkId;
+            this.BenchmarkName = benchmark;
+            this.BenchmarkId = benchmarkId;
         }
-
-        public Measurement[] Measurements { get; set; }
     }
 
     public class Measurement

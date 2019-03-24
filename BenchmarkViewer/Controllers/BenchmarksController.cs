@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using BenchmarkViewer.Models.Contracts;
 using BenchmarkViewer.Services;
+using System.Collections.Generic;
 
 namespace BenchmarkViewer.Controllers
 {
@@ -15,6 +16,14 @@ namespace BenchmarkViewer.Controllers
             var dataStorageService = new DataStorageService();
 
             return dataStorageService.GetMeasurements(id, DateTime.Now.AddMonths(-1), DateTime.Now);
+        }
+
+        // GET: api/Benchmarks
+        [HttpGet]
+        public List<BenchmarkTreeViewModel> GetTreeView()
+        {
+            var treeViewService = new TreeViewService();
+            return treeViewService.PrepareTreeView();
         }
 
         // PUT: api/Benchmarks/

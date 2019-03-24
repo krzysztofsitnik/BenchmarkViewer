@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace BenchmarkViewer.Models.Contracts
 {
@@ -9,6 +6,6 @@ namespace BenchmarkViewer.Models.Contracts
     {
         public string Text { get; set; }
         public int Id { get; set; }
-        public BenchmarkTreeViewModel[] Children { get; set; }
+        public List<BenchmarkTreeViewModel> Children { get; set; } = new List<BenchmarkTreeViewModel>();
     }
 }

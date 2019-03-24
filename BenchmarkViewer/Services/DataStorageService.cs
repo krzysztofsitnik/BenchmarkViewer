@@ -13,16 +13,16 @@ namespace BenchmarkViewer.Services
     {
         const string ConnectionString = @"Server=.;Integrated Security=true;Database=BenchmarkViewer;";
 
-        public Benchmark[] GetBenchmarks()
+        public BenchmarkData[] GetBenchmarks()
         {
             using (var connection = new SqlConnection(ConnectionString))
             {
                 connection.Open();
 
-                var sql = "SELECT * FROM Benchmarks";
+                var sql = "SELECT Benchmark, BenchmarkID FROM Benchmarks";
 
-                return connection.Query<Models.DbModels.Benchmark>(sql)
-                    .Select(b => new BenchmarkData(b.BenchmarkName,b.BenchmarkId)
+                return connection.Query<Models.Contracts.BenchmarkData>(sql)
+                    .Select(b => new BenchmarkData(b.BenchmarkName,b.BenchmarkId))
                     .ToArray();
             }
         }
