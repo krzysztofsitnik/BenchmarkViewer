@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
-
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-tree-view',
@@ -8,77 +8,40 @@ import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
   styleUrls: ['./tree-view.component.css']
 })
 export class TreeViewComponent implements OnInit {
-
-  dropdownEnabled = false;
   items: TreeviewItem[];
-  values: number[];
+
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+    http.get<TreeViewNodeViewModel[]>(baseUrl + 'api/Benchmarks/').subscribe(result => {
+      this.items = this.mapViewModel(result);
+    }, error => console.error(error));
+  }
 
   config = TreeviewConfig.create({
     hasAllCheckBox: true,
     hasFilter: true,
     hasCollapseExpand: true,
     decoupleChildFromParent: false,
-    maxHeight: 800
-});
-
-  buttonClasses = [
-    'btn-outline-primary',
-    'btn-outline-secondary',
-    'btn-outline-success',
-    'btn-outline-danger',
-    'btn-outline-warning',
-    'btn-outline-info',
-    'btn-outline-light',
-    'btn-outline-dark'
-  ];
-
-  constructor() { }
+    maxHeight: 800,
+  });
 
   ngOnInit() {
-    this.items = this.getBooks();
   }
-  getBooks(): TreeviewItem[] {
-    const childrenCategory = new TreeviewItem({
-      text: 'Children', value: 1, collapsed: true, children: [
-        { text: 'Baby 3-5', value: 11 },
-        { text: 'Baby 6-8', value: 12 },
-        { text: 'Baby 9-12', value: 13 }
-      ]
-    });
-    const itCategory = new TreeviewItem({
-      text: 'IT', value: 9, children: [
-        {
-          text: 'Programming', value: 91, children: [{
-            text: 'Frontend', value: 911, children: [
-              { text: 'Angular 1', value: 9111 },
-              { text: 'Angular 2', value: 9112 },
-              { text: 'ReactJS', value: 9113, disabled: true }
-            ]
-          }, {
-            text: 'Backend', value: 912, children: [
-              { text: 'C#', value: 9121 },
-              { text: 'Java', value: 9122 },
-              { text: 'Python', value: 9123, checked: false, disabled: true }
-            ]
-          }]
-        },
-        {
-          text: 'Networking', value: 92, children: [
-            { text: 'Internet', value: 921 },
-            { text: 'Security', value: 922 }
-          ]
-        }
-      ]
-    });
-    const teenCategory = new TreeviewItem({
-      text: 'Teen', value: 2, collapsed: true, disabled: true, children: [
-        { text: 'Adventure', value: 21 },
-        { text: 'Science', value: 22 }
-      ]
-    });
-    const othersCategory = new TreeviewItem({ text: 'Others', value: 3, checked: false, disabled: true });
-    return [childrenCategory, itCategory, teenCategory, othersCategory];
+
+  mapViewModel(input: TreeViewNodeViewModel[]): TreeviewItem[] {
+    return input.map(viewModel => new TreeviewItem(
+      {
+        text: viewModel.text,
+        value: viewModel.id,
+        children: this.mapViewModel(viewModel.children),
+        checked: false,
+        collapsed: true,
+      }
+    ));
   }
 }
 
-
+interface TreeViewNodeViewModel {
+  text: string;
+  id: number;
+  children: TreeViewNodeViewModel[];
+}

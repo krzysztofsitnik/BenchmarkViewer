@@ -6,7 +6,7 @@ namespace BenchmarkViewer.Services
 {
     public class TreeViewService
     {
-        public static List<BenchmarkTreeViewModel> BuildTreeView()
+        public static IReadOnlyList<BenchmarkTreeViewModel> BuildTreeView()
         {
             var dataStorageService = new DataStorageService();
 
@@ -17,13 +17,13 @@ namespace BenchmarkViewer.Services
             foreach (var item in benchmarks)
             {
                 var partsOfName = item.BenchmarkName.Split('.');
-                PrepareNodeTree(topLevelNodes, partsOfName);
+                PrepareNodeTree(topLevelNodes, partsOfName, 0, item.BenchmarkId);
             }
 
             return topLevelNodes;
         }
 
-        private static void PrepareNodeTree(List<BenchmarkTreeViewModel> nodes, string[] partsOfName, int index = 0)
+        private static void PrepareNodeTree(List<BenchmarkTreeViewModel> nodes, string[] partsOfName, int index, int benchmarkId)
         {
             var node = nodes.FirstOrDefault(p => p.Text == partsOfName[index]);
 
@@ -35,7 +35,11 @@ namespace BenchmarkViewer.Services
 
             if (partsOfName.Length > index + 1)
             {
-                PrepareNodeTree(node.Children, partsOfName, index + 1);
+                PrepareNodeTree(node.Children, partsOfName, index + 1, benchmarkId);
+            }
+            else
+            {
+                node.Id = benchmarkId;
             }
         }
     }

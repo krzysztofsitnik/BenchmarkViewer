@@ -20,7 +20,7 @@ namespace BenchmarkViewer.Controllers
 
         // GET: api/Benchmarks
         [HttpGet]
-        public List<BenchmarkTreeViewModel> GetTreeView()
+        public IReadOnlyList<BenchmarkTreeViewModel> GetTreeView()
         {
             return TreeViewService.BuildTreeView();
         }
