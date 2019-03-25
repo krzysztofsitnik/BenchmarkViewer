@@ -11,6 +11,7 @@ export class ChartsComponent implements OnInit {
 
   public measurements: Measurement[];
   public chartType: string;
+  public pointSize: number;
   private selectedIds: number[];
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: ActivatedRoute) {
@@ -20,14 +21,14 @@ export class ChartsComponent implements OnInit {
       if (this.selectedIds && this.selectedIds.length > 0) {
         http.get<Measurement[]>(baseUrl + 'api/Benchmarks/' + this.selectedIds[0]).subscribe(result => {
           this.measurements = result;
-          this.chart1.data = this.measurements.map(m => [new Date(m.date), m.value]);
+          this.chart.data = this.measurements.map(m => [new Date(m.date), m.value]);
         }, error => console.error(error)); }
       });
     }
 
-    chart1 = {
+    chart = {
         title: 'FirstSample',
-        type: 'LineChart',
+        type: 'ScatterChart',
         data: [],
         cols: [
             { type: 'date', id: 'date' },
@@ -36,20 +37,20 @@ export class ChartsComponent implements OnInit {
         options: {
             colors: ['#0000ff' ],
             animation: {
-                duration: 250,
+                duration: 150,
                 easing: 'ease-in-out',
                 startup: true
             },
             pointSize: 3,
+            pointShape: 'circle'
         },
-        height: 1000,
     };
 
     ngOnInit() {
     }
 
     changeType(newType) {
-      this.chart1.type = newType;
+      this.chart.type = newType;
     }
 }
 

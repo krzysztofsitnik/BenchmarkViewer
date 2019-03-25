@@ -1,15 +1,39 @@
-<form>
-    Select chart type:
-    <select [(ngModel)]="chartType" (ngModelChange)="changeType($event)" name="chartTypeSelect">
-        <option value="LineChart">Line Chart
-        <option value="ScatterChart">Scatter Chart
+<nav *ngIf="chart.data.length > 1" class="navbar navbar-light bg-light justify-content-between">
+  <form>
+    Select chart type
+    <select [(ngModel)]="chartType" (ngModelChange)="changeType($event)" name="chartTypeSelect"
+      class="browser-default custom-select">
+      <option value="LineChart">Line Chart
+      <option value="ScatterChart">Scatter Chart
     </select>
-</form>     
-<google-chart style="width: 100%"
-  [title]="chart1.title" 
-  [type]="chart1.type"
-  [data]="chart1.data"
-  [columnNames]="chart1.columnNames"
-  [options]="chart1.options">
-</google-chart>
+  </form>
+  <!-- 
+      <div class="row">
+        <div class="col-sm-4">
+      <input class="form-control" placeholder="yyyy-mm-dd" name="d2" [(ngModel)]="newItem.StartTime" ngbDatepicker
+        #d2="ngbDatepicker" required>
+      <div class="input-group-addon" (click)="d2.toggle()">
+        <i class="fa fa-calendar" aria-hidden="true"></i>
+      </div>
+    </div>
 
+    <div class="col-sm-4">
+      <input class="form-control" placeholder="yyyy-mm-dd" name="d1" [(ngModel)]="newItem.EndTime" ngbDatepicker
+        #d1="ngbDatepicker" required>
+      <div class="input-group-addon" (click)="d1.toggle()">
+        <i class="fa fa-calendar" aria-hidden="true"></i>
+      </div>
+    </div>
+  </div>
+    //-->
+</nav>
+
+<div *ngIf="chart.data.length < 1" class="alert alert-danger text-center" role="alert">
+  Please select data on the left side
+</div>
+
+<div *ngIf="chart.data.length > 1">
+  <google-chart style="width: 100%" [title]="chart.title" [type]="chart.type" [data]="chart.data"
+    [columnNames]="chart.columnNames" [options]="chart.options">
+  </google-chart>
+</div>

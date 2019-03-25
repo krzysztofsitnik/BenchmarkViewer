@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { GoogleChartsModule } from 'angular-google-charts';
 import { TreeviewModule } from 'ngx-treeview';
-
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -26,6 +26,7 @@ import { TreeViewComponent } from './tree-view/tree-view.component';
     HttpClientModule,
     FormsModule,
     GoogleChartsModule,
+    NgbModule,
     TreeviewModule.forRoot(),
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
