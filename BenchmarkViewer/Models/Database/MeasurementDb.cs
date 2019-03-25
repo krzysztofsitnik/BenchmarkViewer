@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace BenchmarkViewer.Models.DbModels
+namespace BenchmarkViewer.Models.Database
 {    
-    public class Measurement
+    public class MeasurementDb
     {
         public int BenchmarkID { get; set; }
         public DateTime Date { get; set; }
@@ -10,8 +10,6 @@ namespace BenchmarkViewer.Models.DbModels
         public string MetricName { get; set; }
         public string Unit { get; set; }
 
-        public Measurement()
-        {
-        }
+        public MeasurementDb() { } // public parameterless ctor is required by Dapper
     }
 }

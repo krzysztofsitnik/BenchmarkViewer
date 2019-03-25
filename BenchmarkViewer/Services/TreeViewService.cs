@@ -6,7 +6,7 @@ namespace BenchmarkViewer.Services
 {
     public class TreeViewService
     {
-        public List<BenchmarkTreeViewModel> PrepareTreeView()
+        public static List<BenchmarkTreeViewModel> BuildTreeView()
         {
             var dataStorageService = new DataStorageService();
 
@@ -22,7 +22,8 @@ namespace BenchmarkViewer.Services
 
             return topLevelNodes;
         }
-        public static void PrepareNodeTree(List<BenchmarkTreeViewModel> nodes, string[] partsOfName, int index = 0)
+
+        private static void PrepareNodeTree(List<BenchmarkTreeViewModel> nodes, string[] partsOfName, int index = 0)
         {
             var node = nodes.FirstOrDefault(p => p.Text == partsOfName[index]);
 

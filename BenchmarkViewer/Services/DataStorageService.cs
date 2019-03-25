@@ -1,11 +1,10 @@
 ﻿using BenchmarkViewer.Models.Contracts;
+using BenchmarkViewer.Models.Database;
 using Dapper;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace BenchmarkViewer.Services
 {
@@ -19,10 +18,8 @@ namespace BenchmarkViewer.Services
             {
                 connection.Open();
 
-                var sql = "SELECT Benchmark, BenchmarkID FROM Benchmarks";
-
-                return connection.Query<Models.Contracts.BenchmarkData>(sql)
-                    .Select(b => new BenchmarkData(b.BenchmarkName,b.BenchmarkId))
+                return connection.Query<BenchmarkDb>("SELECT * FROM Benchmarks")
+                    .Select(b => new BenchmarkData(b.Name, b.Id))
                     .ToArray();
             }
         }
@@ -56,7 +53,7 @@ namespace BenchmarkViewer.Services
                 var sql = "SELECT * FROM BenchmarkMeasurments WHERE BenchmarkID = @BenchmarkID " +
                     "AND Date BETWEEN @from AND @to";
 
-                return connection.Query<Models.DbModels.Measurement>(sql,
+                return connection.Query<Models.Database.MeasurementDb>(sql,
                     new { BenchmarkID = benchmarkID,
                         from,
                         to,
@@ -68,22 +65,21 @@ namespace BenchmarkViewer.Services
 
         private bool BenchmarkExist(string benchmarkName, IDbConnection connection)
         {
-            return connection.ExecuteScalar<bool>("SELECT COUNT (1) FROM Benchmarks WHERE Benchmark = @Benchmark", new { Benchmark = benchmarkName });
+            return connection.ExecuteScalar<bool>("SELECT COUNT (1) FROM Benchmarks WHERE Name = @BenchmarkName", new { BenchmarkName = benchmarkName });
         }
 
         private void CreateBenchmark(string benchmarkName, IDbConnection connection)
         {
-            connection.Execute("INSERT INTO Benchmarks VALUES (@Benchmark)", new { Benchmark = benchmarkName });
+            connection.Execute("INSERT INTO Benchmarks VALUES (@Name)", new { Name = benchmarkName });
         }
         
         private int GetBenchmarkID(string benchmarkName, IDbConnection connection)
         {
-            return connection.Query<int>("SELECT BenchmarkID FROM Benchmarks WHERE Benchmark = @Benchmark", new { Benchmark = benchmarkName }).Single();
+            return connection.Query<int>("SELECT Id FROM Benchmarks WHERE Name = @BenchmarkName", new { BenchmarkName = benchmarkName }).Single();
         }
 
         private void InsertMeasurments(BenchmarkData benchmarkData, IDbConnection connection, int benchmarkID)
         {
-
             foreach (var item in benchmarkData.Measurements)
             {
                 string sql = "INSERT INTO BenchmarkMeasurments (BenchmarkID, Date, Value, MetricName, Unit) VALUES (@BenchmarkID, @Date, @Value, @MetricName, @Unit)";

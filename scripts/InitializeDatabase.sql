@@ -8,12 +8,12 @@ DROP TABLE Benchmarks
 
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Benchmarks')
 	CREATE TABLE Benchmarks(
-		Benchmark NVARCHAR(512) NOT NULL UNIQUE,
-		BenchmarkID INT NOT NULL PRIMARY KEY IDENTITY (1,1))			
+		Name NVARCHAR(512) NOT NULL UNIQUE,
+		Id INT NOT NULL PRIMARY KEY IDENTITY (1,1))			
 
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='BenchmarkMeasurments')
 	CREATE TABLE BenchmarkMeasurments(
-		BenchmarkID INT NOT NULL FOREIGN KEY REFERENCES Benchmarks(BenchmarkID),
+		BenchmarkID INT NOT NULL FOREIGN KEY REFERENCES Benchmarks(Id),
 		Date DATETIME NOT NULL,
 		Value DECIMAL NOT NULL,
 		MetricName VARCHAR(32) NOT NULL,

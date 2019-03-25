@@ -22,13 +22,12 @@ namespace BenchmarkViewer.Controllers
         [HttpGet]
         public List<BenchmarkTreeViewModel> GetTreeView()
         {
-            var treeViewService = new TreeViewService();
-            return treeViewService.PrepareTreeView();
+            return TreeViewService.BuildTreeView();
         }
 
         // PUT: api/Benchmarks/
         [HttpPut()]
-        public void Put([FromBody] Models.Contracts.BenchmarkData value)
+        public void Put([FromBody] BenchmarkData value)
         {
             var dataStorageService = new DataStorageService();
             dataStorageService.InsertResults(value);
