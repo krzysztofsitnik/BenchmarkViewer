@@ -33,10 +33,8 @@ import { TreeViewComponent } from './tree-view/tree-view.component';
     TreeviewModule.forRoot(),
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
       { path: 'charts', component: ChartsComponent },
-
+      { path: 'charts/:selectedIds', component: ChartsComponent },
     ])
   ],
   providers: [],

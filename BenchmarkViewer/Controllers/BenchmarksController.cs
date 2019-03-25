@@ -11,7 +11,7 @@ namespace BenchmarkViewer.Controllers
     {
         // GET: api /Benchmarks/5
         [HttpGet("{id}", Name = "Get")]
-        public Measurement[] Get(string id)
+        public Measurement[] Get(int id)
         {
             var dataStorageService = new DataStorageService();
 

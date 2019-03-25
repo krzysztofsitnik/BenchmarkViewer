@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, EventEmitter, Output } from '@angular/core';
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
 import { HttpClient } from '@angular/common/http';
 
@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class TreeViewComponent implements OnInit {
   items: TreeviewItem[];
+  @Output() selectedChange = new EventEmitter<number[]>();
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     http.get<TreeViewNodeViewModel[]>(baseUrl + 'api/Benchmarks/').subscribe(result => {
@@ -37,6 +38,10 @@ export class TreeViewComponent implements OnInit {
         collapsed: true,
       }
     ));
+  }
+
+  onSelectedChange(selectedIds: number[]) {
+    this.selectedChange.emit(selectedIds);
   }
 }
 

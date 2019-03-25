@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-charts',
@@ -10,12 +11,19 @@ export class ChartsComponent implements OnInit {
 
   public measurements: Measurement[];
   public chartType: string;
+  private selectedIds: number[];
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-      http.get<Measurement[]>(baseUrl + 'api/Benchmarks/' + 'Burgers.Test0').subscribe(result => {
-        this.measurements = result;
-        this.chart1.data = this.measurements.map(m => [new Date(m.date), m.value]);
-    }, error => console.error(error)); }
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: ActivatedRoute) {
+    this.route.params.subscribe(params => {
+      this.selectedIds = params['selectedIds'].split(',').map(Number);
+
+      if (this.selectedIds && this.selectedIds.length > 0) {
+        http.get<Measurement[]>(baseUrl + 'api/Benchmarks/' + this.selectedIds[0]).subscribe(result => {
+          this.measurements = result;
+          this.chart1.data = this.measurements.map(m => [new Date(m.date), m.value]);
+        }, error => console.error(error)); }
+      });
+    }
 
     chart1 = {
         title: 'FirstSample',
