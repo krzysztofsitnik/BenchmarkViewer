@@ -10,8 +10,6 @@ import { TreeviewModule } from 'ngx-treeview';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ChartsComponent } from './charts/charts.component';
 import { TreeViewComponent } from './tree-view/tree-view.component';
 
@@ -20,8 +18,6 @@ import { TreeViewComponent } from './tree-view/tree-view.component';
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
-    FetchDataComponent,
     ChartsComponent,
     TreeViewComponent
   ],
