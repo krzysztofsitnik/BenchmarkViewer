@@ -49,7 +49,7 @@ namespace BenchmarkViewer.Services
                     return default(BenchmarkData);
 
                 var sql = "SELECT * FROM BenchmarkMeasurments WHERE BenchmarkID = @BenchmarkID " +
-                    "AND Date BETWEEN @from AND @to";
+                    "AND Date BETWEEN @from AND @to ORDER BY Date ASC";
 
                 var measurements = connection.Query<Models.Database.MeasurementDb>(sql,
                     new
