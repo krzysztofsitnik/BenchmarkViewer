@@ -9,13 +9,13 @@ namespace BenchmarkViewer.Controllers
     [Route("api/[controller]")]
     public class BenchmarksController : Controller
     {
-        // GET: api /Benchmarks/5
-        [HttpGet("{id}", Name = "Get")]
-        public BenchmarkData Get(int id)
+        // GET: api /Benchmarks/id/from/to
+        [HttpGet("{id}/{from}/{to}", Name = "Get")]
+        public BenchmarkData Get(int id, DateTime from, DateTime to)
         {
             var dataStorageService = new DataStorageService();
 
-            return dataStorageService.GetBenchmarkData(id, DateTime.Now.AddMonths(-1), DateTime.Now);
+            return dataStorageService.GetBenchmarkData(id, from, to);
         }
 
         // GET: api/Benchmarks
