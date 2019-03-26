@@ -9,7 +9,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { HomeComponent } from './home/home.component';
 import { ChartsComponent } from './charts/charts.component';
 import { TreeViewComponent } from './tree-view/tree-view.component';
 
@@ -17,7 +16,6 @@ import { TreeViewComponent } from './tree-view/tree-view.component';
   declarations: [
     AppComponent,
     NavMenuComponent,
-    HomeComponent,
     ChartsComponent,
     TreeViewComponent
   ],
@@ -29,7 +27,7 @@ import { TreeViewComponent } from './tree-view/tree-view.component';
     NgbModule,
     TreeviewModule.forRoot(),
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: '', component: ChartsComponent, pathMatch: 'full' },
       { path: 'charts', component: ChartsComponent },
       { path: 'charts/:selectedIds', component: ChartsComponent },
     ])
