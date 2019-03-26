@@ -30,19 +30,16 @@ export class ChartsComponent implements OnInit {
   }
 
   chart = {
-    title: 'FirstSample',
+    title: 'Benchmark',
     type: 'ScatterChart',
     data: [],
     cols: [
       { type: 'date', id: 'date' },
       { type: 'number', id: 'value' },
     ],
-    columnNames: ['a', 'b'],
+    columnNames: ['Date', 'Value'],
     options: {
-      legend:
-      {
-        position: 'right',
-      },
+      legend: 'none',
       displayAnnotations: true,
       colors: ['#0000ff'],
       animation: {
@@ -56,7 +53,7 @@ export class ChartsComponent implements OnInit {
         title: 'Date',
       },
       vAxis: {
-        title: 'Time'
+        title: 'Value'
       },
     }
   };
@@ -66,6 +63,14 @@ export class ChartsComponent implements OnInit {
 
   changeType(newType) {
     this.chart.type = newType;
+  }
+
+  onWindowResize(event) {
+    // the chart control does not support dynamic re-sizing
+    // so when the window size changes, we reassign the data property
+    // which triggers a redraw
+    // idea from https://github.com/FERNman/angular-google-charts/issues/39#issuecomment-468502116
+    this.chart.data = Object.assign([], this.chart.data);
   }
 }
 

@@ -32,7 +32,7 @@
   Please select data on the left side
 </div>
 
-<div *ngIf="chart.data.length > 1">
+<div *ngIf="chart.data.length > 1" (window:resize)="onWindowResize($event)">
   <google-chart style="width: 100%" [title]="chart.title" [type]="chart.type" [data]="chart.data"
     [columnNames]="chart.columnNames" [options]="chart.options">
   </google-chart>
