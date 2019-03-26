@@ -39,6 +39,31 @@ namespace BenchmarkViewer.Services
             }
         }
 
+        public BenchmarkData GetBenchmarkData(int benchmarkId, DateTime from, DateTime to)
+        {
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+
+                if (!BenchmarkExist(benchmarkId, connection))
+                    return default(BenchmarkData);
+
+                var sql = "SELECT * FROM BenchmarkMeasurments WHERE BenchmarkID = @BenchmarkID " +
+                    "AND Date BETWEEN @from AND @to";
+
+                var measurements = connection.Query<Models.Database.MeasurementDb>(sql,
+                    new
+                    {
+                        BenchmarkID = benchmarkId,
+                        from,
+                        to,
+                    })
+                    .Select(m => new Measurement(m.BenchmarkID, m.Date, m.Value, m.MetricName, m.Unit))
+                    .ToArray();
+                return new BenchmarkData(GetBenchmarkName(benchmarkId, connection), benchmarkId, measurements);
+            }
+        }
+
         public Measurement[] GetMeasurements(int benchmarkId, DateTime from, DateTime to)
         {
             using (var connection = new SqlConnection(ConnectionString))
@@ -79,6 +104,11 @@ namespace BenchmarkViewer.Services
         private int GetBenchmarkID(string benchmarkName, IDbConnection connection)
         {
             return connection.Query<int>("SELECT Id FROM Benchmarks WHERE Name = @BenchmarkName", new { BenchmarkName = benchmarkName }).Single();
+        }
+
+        private string GetBenchmarkName(int benchmarkId, IDbConnection connection)
+        {
+            return connection.Query<string>("SELECT Name FROM Benchmarks WHERE Id = @benchmarkId", new { benchmarkId = benchmarkId }).Single();
         }
 
         private void InsertMeasurments(BenchmarkData benchmarkData, IDbConnection connection, int benchmarkID)

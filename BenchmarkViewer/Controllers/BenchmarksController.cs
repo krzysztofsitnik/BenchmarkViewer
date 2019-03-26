@@ -11,11 +11,11 @@ namespace BenchmarkViewer.Controllers
     {
         // GET: api /Benchmarks/5
         [HttpGet("{id}", Name = "Get")]
-        public Measurement[] Get(int id)
+        public BenchmarkData Get(int id)
         {
             var dataStorageService = new DataStorageService();
 
-            return dataStorageService.GetMeasurements(id, DateTime.Now.AddMonths(-1), DateTime.Now);
+            return dataStorageService.GetBenchmarkData(id, DateTime.Now.AddMonths(-1), DateTime.Now);
         }
 
         // GET: api/Benchmarks
