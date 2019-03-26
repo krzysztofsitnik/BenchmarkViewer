@@ -46,7 +46,7 @@ namespace BenchmarkViewer.Services
                 connection.Open();
 
                 if (!BenchmarkExist(benchmarkId, connection))
-                    return default(BenchmarkData);
+                    return new BenchmarkData(string.Empty,0,Array.Empty<Measurement>());
 
                 var sql = "SELECT * FROM BenchmarkMeasurments WHERE BenchmarkID = @BenchmarkID " +
                     "AND Date BETWEEN @from AND @to ORDER BY Date ASC";
