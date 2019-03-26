@@ -45,4 +45,3 @@ namespace BenchmarkViewer.Models.Contracts
         }
     }
 }
-    

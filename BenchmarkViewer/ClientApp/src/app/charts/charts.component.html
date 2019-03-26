@@ -1,6 +1,7 @@
 <nav *ngIf="chart.data.length > 1" class="navbar navbar-light bg-light justify-content-between">
-  <div class="row">
-    <div class="col-sm-3">
+  <div class="row row-no-gutters">
+
+    <div class="col-sm-4">
       <form>
         Select chart type
         <select [(ngModel)]="chartType" (ngModelChange)="changeType($event)" name="chartTypeSelect"
@@ -10,25 +11,36 @@
         </select>
       </form>
     </div>
-    <div class="col-sm-3" style="display: flex">
-      From
-      <input class="form-control" placeholder="yyyy-mm-dd" name="fromDatePicker" [(ngModel)]="fromTime" ngbDatepicker
-        #fromDatePicker="ngbDatepicker" (ngModelChange)="onDateSelection($event)" required>
-      <div class="input-group-addon" (click)="fromDatePicker.toggle()">
-        <i class="fa fa-calendar" aria-hidden="true" style="padding: 5px"></i>
-      </div>
+
+    <div class="col-sm-4">
+      <form class="form-inline">From
+        <div class="form-group">
+          <div class="input-group">
+            <input class="form-control" placeholder="yyyy-mm-dd" name="fromDatePicker" [(ngModel)]="fromTime"
+              ngbDatepicker #fromDatePicker="ngbDatepicker" (ngModelChange)="onDateSelection($event)">
+            <div class=" input-group-append">
+              <button class="btn btn-outline-secondary calendar" (click)="fromDatePicker.toggle()"
+                type="button"></button>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
 
-    <div class="col-sm-3" style="display: flex">
-      To
-      <input class="form-control" placeholder="yyyy-mm-dd" name="toDatePicker" [(ngModel)]="toTime" ngbDatepicker
-        #toDatePicker="ngbDatepicker" (ngModelChange)="onDateSelection($event)" required>
-        <div class="input-group-addon" (click)="toDatePicker.toggle()">
-            <i class="fa fa-calendar" aria-hidden="true" style="padding: 5px"></i>
+    <div class="col-sm-3">
+      <form class="form-inline">To
+        <div class="form-group">
+          <div class="input-group">
+            <input class="form-control" placeholder="yyyy-mm-dd" name="toDatePicker" [(ngModel)]="toTime" ngbDatepicker
+              #toDatePicker="ngbDatepicker" (ngModelChange)="onDateSelection($event)">
+            <div class=" input-group-append">
+              <button class="btn btn-outline-secondary calendar" (click)="toDatePicker.toggle()" type="button"></button>
+            </div>
+          </div>
         </div>
+      </form>
     </div>
   </div>
-
 </nav>
 
 <div *ngIf="chart.data.length < 1" class="alert alert-danger text-center" role="alert">

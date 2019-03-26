@@ -33,6 +33,4 @@ namespace BenchmarkViewer.Controllers
             dataStorageService.InsertResults(value);
         }
     }
-}
-    
-
+}  
